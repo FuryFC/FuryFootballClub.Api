@@ -33,19 +33,32 @@ namespace FuryFootballClub.Api.Tests.Controllers
         {
             var matchFixtureDto = new GetMatchFixtureRequest {Guid=Guid.NewGuid()};
             var matchFixture = new MatchFixture() {Guid = matchFixtureDto.Guid};
+            var expectedMatchFixture = new MatchFixtureData();
 
             _mapper.Expect(m => m.Map<GetMatchFixtureRequest, MatchFixture>(matchFixtureDto)).Return(matchFixture);
+            _mapper.Expect(m => m.Map<MatchFixture, MatchFixtureData>(matchFixture)).Return(expectedMatchFixture);
             _matchFixtureService.Expect(s => s.Find(matchFixtureDto.Guid)).Return(matchFixture);
 
             var result = _controller.Get(matchFixtureDto);
 
             Assert.AreEqual(ResponseStatus.Success, result.Status);
-            Assert.AreEqual(matchFixtureDto.Guid, result.Guid);
-
-            // TODO: Test for better attribute retrieval.  Maybe even use OData.
+            Assert.AreSame(expectedMatchFixture, result.MatchFixtureData);
         }
 
-        // TODO: test Find for Guid that doesn't exist.
+        [Test]
+        public void Get_GuidDoesExist()
+        {
+            var matchFixtureDto = new GetMatchFixtureRequest { Guid = Guid.Empty };
+            var matchFixture = new MatchFixture() { Guid = matchFixtureDto.Guid };
+
+            _mapper.Expect(m => m.Map<GetMatchFixtureRequest, MatchFixture>(matchFixtureDto)).Return(matchFixture);
+            _matchFixtureService.Expect(s => s.Find(matchFixture.Guid)).Return(null);
+
+            var result = _controller.Get(matchFixtureDto);
+
+            Assert.AreEqual(ResponseStatus.Success, result.Status);
+            Assert.IsNull(result.MatchFixtureData);
+        }
 
         #endregion
 

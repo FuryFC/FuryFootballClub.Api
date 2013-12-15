@@ -126,6 +126,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MatchFixtureController.cs" />
     <Compile Include="Models\MatchFixture\GetMatchFixtureRequest.cs" />
+    <Compile Include="Models\MatchFixture\GetMatchFixtureResponse.cs" />
     <Compile Include="Models\MatchFixture\MatchFixtureResponse.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

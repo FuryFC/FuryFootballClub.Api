@@ -19,13 +19,18 @@ namespace FuryFootballClub.Api.Controllers
             _mapper = mapper;
         }
 
-        public MatchFixtureResponse Get([FromBody] GetMatchFixtureRequest getMatchFixtureRequest)
+        public GetMatchFixtureResponse Get(GetMatchFixtureRequest getMatchFixtureRequest)
         {
             var matchFixture = _matchFixtureService.Find(getMatchFixtureRequest.Guid);
+            var matchFixtureData = matchFixture == null ? null : _mapper.Map<MatchFixture, MatchFixtureData>(matchFixture);
+            var response = new GetMatchFixtureResponse
+            {
+                Guid = matchFixture == null ? Guid.Empty : matchFixture.Guid, 
+                Status = ResponseStatus.Success,
+                MatchFixtureData = matchFixtureData
+            };
 
-            // TODO: This response should return all attribs of MatchFixture.  
-            // The response object should be more specific to each method call.
-            return new MatchFixtureResponse { Guid = matchFixture.Guid, Status = ResponseStatus.Success };
+            return response;
         }
 
         public MatchFixtureResponse Post([FromBody]NewMatchFixtureRequest newMatchFixtureRequest)
@@ -38,7 +43,7 @@ namespace FuryFootballClub.Api.Controllers
             return new MatchFixtureResponse {Guid = guid, Status = ResponseStatus.Success};
         }
 
-        public MatchFixtureResponse Put([FromBody] UpdateMatchFixtureRequest updateMatchFixtureRequest)
+        public MatchFixtureResponse Put([FromBody]UpdateMatchFixtureRequest updateMatchFixtureRequest)
         {
             if (updateMatchFixtureRequest.Guid == Guid.Empty) { return new MatchFixtureResponse() {Status = ResponseStatus.Failure}; }
 
