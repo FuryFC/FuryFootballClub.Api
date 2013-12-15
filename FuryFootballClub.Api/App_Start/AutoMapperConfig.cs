@@ -8,7 +8,7 @@ namespace FuryFootballClub.Api
     {
         public void RegisterModelMappings()
         {
-            Mapper.CreateMap<MatchFixture, MatchFixtureDto>();
+            Mapper.CreateMap<MatchFixture, NewMatchFixtureRequest>();
 
             Mapper.AssertConfigurationIsValid();
         }

@@ -1,6 +1,6 @@
 ﻿namespace FuryFootballClub.Api.Models
 {
-    public class MatchFixtureDto
+    public class NewMatchFixtureRequest
     {
     }
 }
