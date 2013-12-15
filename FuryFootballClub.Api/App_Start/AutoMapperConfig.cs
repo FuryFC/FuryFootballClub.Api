@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using FuryFootballClub.Api.Models;
+using FuryFootballClub.Api.Models.MatchFixture;
 using FuryFootballClub.Core.Domain;
 
 namespace FuryFootballClub.Api
@@ -8,7 +8,9 @@ namespace FuryFootballClub.Api
     {
         public void RegisterModelMappings()
         {
-            Mapper.CreateMap<MatchFixture, NewMatchFixtureRequest>();
+            Mapper.CreateMap<GetMatchFixtureRequest, MatchFixture>();
+            Mapper.CreateMap<NewMatchFixtureRequest, MatchFixture>();
+            Mapper.CreateMap<UpdateMatchFixtureRequest, MatchFixture>();
 
             Mapper.AssertConfigurationIsValid();
         }

@@ -6,5 +6,6 @@ namespace FuryFootballClub.Core.Service
     public interface IMatchFixtureService
     {
         Guid Save(MatchFixture matchFixture);
+        MatchFixture Find(Guid guid);
     }
 }

@@ -125,13 +125,14 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MatchFixtureController.cs" />
-    <Compile Include="Models\MatchFixtureResponse.cs" />
+    <Compile Include="Models\MatchFixture\GetMatchFixtureRequest.cs" />
+    <Compile Include="Models\MatchFixture\MatchFixtureResponse.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\NewMatchFixtureRequest.cs" />
+    <Compile Include="Models\MatchFixture\NewMatchFixtureRequest.cs" />
     <Compile Include="Models\ResponseStatus.cs" />
-    <Compile Include="Models\UpdateMatchFixtureRequest.cs" />
+    <Compile Include="Models\MatchFixture\UpdateMatchFixtureRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

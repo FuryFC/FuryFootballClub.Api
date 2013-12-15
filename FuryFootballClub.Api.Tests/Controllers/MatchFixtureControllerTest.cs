@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using AutoMapper;
 using FuryFootballClub.Api.Models;
 using FuryFootballClub.Api.Controllers;
+using FuryFootballClub.Api.Models.MatchFixture;
 using FuryFootballClub.Core.Domain;
 using FuryFootballClub.Core.Service;
 using NUnit.Framework;
@@ -24,6 +25,29 @@ namespace FuryFootballClub.Api.Tests.Controllers
             _mapper = MockRepository.GenerateMock<IMappingEngine>();
             _controller = new MatchFixtureController(_matchFixtureService, _mapper);
         }
+
+        #region Get
+
+        [Test]
+        public void Get_MatchFixtureByGuid()
+        {
+            var matchFixtureDto = new GetMatchFixtureRequest {Guid=Guid.NewGuid()};
+            var matchFixture = new MatchFixture() {Guid = matchFixtureDto.Guid};
+
+            _mapper.Expect(m => m.Map<GetMatchFixtureRequest, MatchFixture>(matchFixtureDto)).Return(matchFixture);
+            _matchFixtureService.Expect(s => s.Find(matchFixtureDto.Guid)).Return(matchFixture);
+
+            var result = _controller.Get(matchFixtureDto);
+
+            Assert.AreEqual(ResponseStatus.Success, result.Status);
+            Assert.AreEqual(matchFixtureDto.Guid, result.Guid);
+
+            // TODO: Test for better attribute retrieval.  Maybe even use OData.
+        }
+
+        // TODO: test Find for Guid that doesn't exist.
+
+        #endregion
 
         #region Post
 

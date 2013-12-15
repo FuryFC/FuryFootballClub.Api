@@ -1,4 +1,4 @@
-﻿namespace FuryFootballClub.Api.Models
+﻿namespace FuryFootballClub.Api.Models.MatchFixture
 {
     public class NewMatchFixtureRequest
     {
