@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web.Http;
 using System.Web.Http.Hosting;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using FuryFootballClub.Api.Controllers;
 using FuryFootballClub.Api.Models.MatchFixture;
 using FuryFootballClub.Core.Domain;
@@ -48,7 +52,7 @@ namespace FuryFootballClub.Api.Tests.Controllers
 
         #endregion
 
-        #region Get
+        #region Get By Guid
 
         [Test]
         public void Get_MatchFixtureByGuid()
@@ -78,6 +82,26 @@ namespace FuryFootballClub.Api.Tests.Controllers
             var result = _controller.Get(matchFixtureDto);
 
             Assert.IsNull(result);
+        }
+
+        #endregion
+
+        #region Get List
+
+        [Test]
+        public void Get_All()
+        {
+            var matchFixtures = MockRepository.GenerateMock<IQueryable<MatchFixture>>();
+            var projectionExpression = MockRepository.GenerateMock<IProjectionExpression>();
+            var matchFixtureData = new List<MatchFixtureData>().AsQueryable();
+
+            //_matchFixtureService.Expect(s => s.List()).Return(matchFixtures);
+            //matchFixtures.Expect(m => m.Project()).Return(projectionExpression);
+            //projectionExpression.Expect(p => p.To<MatchFixtureData>()).Return(matchFixtureData);
+
+            //var result = _controller.Get();
+
+            //Assert.AreSame(matchFixtureData, result);
         }
 
         #endregion

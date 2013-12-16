@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using FuryFootballClub.Api.Models;
 using FuryFootballClub.Api.Models.MatchFixture;
 using FuryFootballClub.Core.Domain;
@@ -26,6 +28,12 @@ namespace FuryFootballClub.Api.Controllers
         {
             _matchFixtureService.Delete(guid);
             return Request.CreateResponse(HttpStatusCode.NoContent);
+        }
+
+        public IQueryable<MatchFixtureData> Get()
+        {
+            var matchFixtures = _matchFixtureService.List();
+            return matchFixtures.Project().To<MatchFixtureData>();
         }
 
         public MatchFixtureData Get(GetMatchFixtureRequest getMatchFixtureRequest)
