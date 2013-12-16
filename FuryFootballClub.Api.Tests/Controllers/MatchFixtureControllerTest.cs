@@ -1,5 +1,13 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Hosting;
+using System.Web.Mvc;
+using System.Web.Routing;
 using AutoMapper;
 using FuryFootballClub.Api.Models;
 using FuryFootballClub.Api.Controllers;
@@ -24,6 +32,11 @@ namespace FuryFootballClub.Api.Tests.Controllers
             _matchFixtureService = MockRepository.GenerateMock<IMatchFixtureService>();
             _mapper = MockRepository.GenerateMock<IMappingEngine>();
             _controller = new MatchFixtureController(_matchFixtureService, _mapper);
+
+            // Mocking Context for the controller
+            var request = MockRepository.GenerateMock<HttpRequestMessage>();
+            _controller.Request = request;
+            _controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
         }
 
         #region Get
@@ -98,25 +111,25 @@ namespace FuryFootballClub.Api.Tests.Controllers
         {
             var matchFixtureDto = new UpdateMatchFixtureRequest {Guid = Guid.NewGuid()};
             var matchFixture = new MatchFixture();
+            //var newUri = string.Format("http://localhost:8080/MatchFixture/{0}", matchFixtureDto.Guid);
+
 
             _mapper.Expect(m => m.Map<UpdateMatchFixtureRequest, MatchFixture>(matchFixtureDto)).Return(matchFixture);
             _matchFixtureService.Expect(s => s.Save(matchFixture)).Return(matchFixtureDto.Guid);
 
-            var result = _controller.Put(matchFixtureDto);
+            HttpResponseMessage result = _controller.Put(matchFixtureDto);
 
-            Assert.AreEqual(ResponseStatus.Success, result.Status);
-            Assert.AreEqual(matchFixtureDto.Guid, result.Guid);
+            Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode);
+            // TODO: Test newly added resource URI.
+            //Assert.AreEqual(newUri, result.Headers.Location);
         }
 
         [Test]
         public void Put_FailsWithMissingGuid()
         {
             var matchFixtureDto = new UpdateMatchFixtureRequest();
-
             var result = _controller.Put(matchFixtureDto);
-
-            Assert.AreEqual(ResponseStatus.Failure, result.Status);
-            Assert.AreEqual(Guid.Empty, result.Guid);
+            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
         }
 
         #endregion

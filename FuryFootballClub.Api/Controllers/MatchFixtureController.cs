@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using AutoMapper;
 using FuryFootballClub.Api.Models;
@@ -33,7 +36,7 @@ namespace FuryFootballClub.Api.Controllers
             return response;
         }
 
-        public MatchFixtureResponse Post([FromBody]NewMatchFixtureRequest newMatchFixtureRequest)
+        public MatchFixtureResponse Post(NewMatchFixtureRequest newMatchFixtureRequest)
         {
             if (newMatchFixtureRequest == null) { return new MatchFixtureResponse() {Status = ResponseStatus.Failure}; }
 
@@ -43,14 +46,15 @@ namespace FuryFootballClub.Api.Controllers
             return new MatchFixtureResponse {Guid = guid, Status = ResponseStatus.Success};
         }
 
-        public MatchFixtureResponse Put([FromBody]UpdateMatchFixtureRequest updateMatchFixtureRequest)
+        public HttpResponseMessage Put(UpdateMatchFixtureRequest updateMatchFixtureRequest)
         {
-            if (updateMatchFixtureRequest.Guid == Guid.Empty) { return new MatchFixtureResponse() {Status = ResponseStatus.Failure}; }
+            // TODO: Send back validation errors
+            if (updateMatchFixtureRequest.Guid == Guid.Empty) { return Request.CreateResponse(HttpStatusCode.BadRequest); }
 
             var matchFixture = _mapper.Map<UpdateMatchFixtureRequest, MatchFixture>(updateMatchFixtureRequest);
-            var guid = _matchFixtureService.Save(matchFixture);
+            _matchFixtureService.Save(matchFixture);
 
-            return new MatchFixtureResponse { Guid = guid, Status = ResponseStatus.Success };
+            return Request.CreateResponse(HttpStatusCode.NoContent, matchFixture);
         }
     }
 }
