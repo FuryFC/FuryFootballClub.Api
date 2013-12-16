@@ -36,14 +36,14 @@ namespace FuryFootballClub.Api.Controllers
             return response;
         }
 
-        public MatchFixtureResponse Post(NewMatchFixtureRequest newMatchFixtureRequest)
+        public HttpResponseMessage Post(NewMatchFixtureRequest newMatchFixtureRequest)
         {
-            if (newMatchFixtureRequest == null) { return new MatchFixtureResponse() {Status = ResponseStatus.Failure}; }
+            if (newMatchFixtureRequest == null) { return Request.CreateResponse(HttpStatusCode.BadRequest); }
 
             var matchFixture = _mapper.Map<NewMatchFixtureRequest, MatchFixture>(newMatchFixtureRequest);
             var guid = _matchFixtureService.Save(matchFixture);
 
-            return new MatchFixtureResponse {Guid = guid, Status = ResponseStatus.Success};
+            return Request.CreateResponse(HttpStatusCode.OK, matchFixture);
         }
 
         public HttpResponseMessage Put(UpdateMatchFixtureRequest updateMatchFixtureRequest)

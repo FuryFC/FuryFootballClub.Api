@@ -89,8 +89,9 @@ namespace FuryFootballClub.Api.Tests.Controllers
             
             var result = _controller.Post(matchFixtureDto);
 
-            Assert.AreEqual(ResponseStatus.Success, result.Status);
-            Assert.AreEqual(matchFixtureGuid, result.Guid);
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            // TODO: Test newly added resource URI.
+            //Assert.AreEqual(matchFixtureGuid, result.Guid);
         }
 
         [Test]
@@ -98,8 +99,9 @@ namespace FuryFootballClub.Api.Tests.Controllers
         {
             var result = _controller.Post(null);
 
-            Assert.AreEqual(ResponseStatus.Failure, result.Status);
-            Assert.AreEqual(Guid.Empty, result.Guid);
+            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
+            // TODO: Test newly added resource URI.
+            //Assert.AreEqual(Guid.Empty, result.Guid);
         }
 
         #endregion
