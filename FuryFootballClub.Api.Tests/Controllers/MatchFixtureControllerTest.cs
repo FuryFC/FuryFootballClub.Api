@@ -54,8 +54,7 @@ namespace FuryFootballClub.Api.Tests.Controllers
 
             var result = _controller.Get(matchFixtureDto);
 
-            Assert.AreEqual(ResponseStatus.Success, result.Status);
-            Assert.AreSame(expectedMatchFixture, result.MatchFixtureData);
+            Assert.AreSame(expectedMatchFixture, result);
         }
 
         [Test]
@@ -69,8 +68,7 @@ namespace FuryFootballClub.Api.Tests.Controllers
 
             var result = _controller.Get(matchFixtureDto);
 
-            Assert.AreEqual(ResponseStatus.Success, result.Status);
-            Assert.IsNull(result.MatchFixtureData);
+            Assert.IsNull(result);
         }
 
         #endregion

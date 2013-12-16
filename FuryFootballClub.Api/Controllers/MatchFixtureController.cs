@@ -22,26 +22,20 @@ namespace FuryFootballClub.Api.Controllers
             _mapper = mapper;
         }
 
-        public GetMatchFixtureResponse Get(GetMatchFixtureRequest getMatchFixtureRequest)
+        public MatchFixtureData Get(GetMatchFixtureRequest getMatchFixtureRequest)
         {
             var matchFixture = _matchFixtureService.Find(getMatchFixtureRequest.Guid);
             var matchFixtureData = matchFixture == null ? null : _mapper.Map<MatchFixture, MatchFixtureData>(matchFixture);
-            var response = new GetMatchFixtureResponse
-            {
-                Guid = matchFixture == null ? Guid.Empty : matchFixture.Guid, 
-                Status = ResponseStatus.Success,
-                MatchFixtureData = matchFixtureData
-            };
-
-            return response;
+            return matchFixtureData;
         }
 
         public HttpResponseMessage Post(NewMatchFixtureRequest newMatchFixtureRequest)
         {
+            // TODO: Send back validation errors
             if (newMatchFixtureRequest == null) { return Request.CreateResponse(HttpStatusCode.BadRequest); }
 
             var matchFixture = _mapper.Map<NewMatchFixtureRequest, MatchFixture>(newMatchFixtureRequest);
-            var guid = _matchFixtureService.Save(matchFixture);
+            _matchFixtureService.Save(matchFixture);
 
             return Request.CreateResponse(HttpStatusCode.OK, matchFixture);
         }

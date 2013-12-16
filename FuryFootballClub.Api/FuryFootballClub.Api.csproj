@@ -126,11 +126,10 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MatchFixtureController.cs" />
     <Compile Include="Models\MatchFixture\GetMatchFixtureRequest.cs" />
-    <Compile Include="Models\MatchFixture\GetMatchFixtureResponse.cs" />
-    <Compile Include="Models\MatchFixture\MatchFixtureResponse.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\MatchFixture\MatchFixtureData.cs" />
     <Compile Include="Models\MatchFixture\NewMatchFixtureRequest.cs" />
     <Compile Include="Models\ResponseStatus.cs" />
     <Compile Include="Models\MatchFixture\UpdateMatchFixtureRequest.cs" />

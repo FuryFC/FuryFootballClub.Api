@@ -2,14 +2,6 @@
 
 namespace FuryFootballClub.Api.Models.MatchFixture
 {
-    public class GetMatchFixtureResponse
-    {
-        public ResponseStatus Status { get; set; }
-        public Guid Guid { get; set; }
-        public MatchFixtureData MatchFixtureData { get; set; }
-    }
-
-    // TODO: move to own file
     // TODO: convert stringly typed to strongly typed
     public class MatchFixtureData
     {
