@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Http;
-using System.Web.Http.Controllers;
 using System.Web.Http.Hosting;
-using System.Web.Mvc;
-using System.Web.Routing;
 using AutoMapper;
-using FuryFootballClub.Api.Models;
 using FuryFootballClub.Api.Controllers;
 using FuryFootballClub.Api.Models.MatchFixture;
 using FuryFootballClub.Core.Domain;
@@ -38,6 +32,21 @@ namespace FuryFootballClub.Api.Tests.Controllers
             _controller.Request = request;
             _controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
         }
+
+        #region Delete
+
+        [Test]
+        public void Delete_RemovingExistingMatchFixture()
+        {
+            var matchFixtureGuid = Guid.NewGuid();
+            _matchFixtureService.Expect(s => s.Delete(matchFixtureGuid));
+
+            var result = _controller.Delete(matchFixtureGuid);
+
+            Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode);
+        }
+
+        #endregion
 
         #region Get
 

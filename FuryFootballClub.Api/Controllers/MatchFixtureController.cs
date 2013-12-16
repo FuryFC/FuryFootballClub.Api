@@ -22,6 +22,12 @@ namespace FuryFootballClub.Api.Controllers
             _mapper = mapper;
         }
 
+        public HttpResponseMessage Delete(Guid guid)
+        {
+            _matchFixtureService.Delete(guid);
+            return Request.CreateResponse(HttpStatusCode.NoContent);
+        }
+
         public MatchFixtureData Get(GetMatchFixtureRequest getMatchFixtureRequest)
         {
             var matchFixture = _matchFixtureService.Find(getMatchFixtureRequest.Guid);
