@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuryFootballClub.Api.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuryFootballClub.Core", "FuryFootballClub.Core\FuryFootballClub.Core.csproj", "{9ED25688-0B67-47FB-859B-89C9FA8F7824}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuryFootballClub.Core.Tests", "FuryFootballClub.Core.Tests\FuryFootballClub.Core.Tests.csproj", "{E72405F5-D7BD-48E3-A328-FD9B7AE26531}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FB51E334-2FC1-4C48-B677-42FBD40E489F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,8 +31,16 @@ Global
 		{9ED25688-0B67-47FB-859B-89C9FA8F7824}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9ED25688-0B67-47FB-859B-89C9FA8F7824}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9ED25688-0B67-47FB-859B-89C9FA8F7824}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E72405F5-D7BD-48E3-A328-FD9B7AE26531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E72405F5-D7BD-48E3-A328-FD9B7AE26531}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E72405F5-D7BD-48E3-A328-FD9B7AE26531}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E72405F5-D7BD-48E3-A328-FD9B7AE26531}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FCE1A5B7-5C88-4D60-934D-6C631BC1DC3F} = {FB51E334-2FC1-4C48-B677-42FBD40E489F}
+		{E72405F5-D7BD-48E3-A328-FD9B7AE26531} = {FB51E334-2FC1-4C48-B677-42FBD40E489F}
 	EndGlobalSection
 EndGlobal
