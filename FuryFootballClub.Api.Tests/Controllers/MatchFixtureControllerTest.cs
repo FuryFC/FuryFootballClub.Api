@@ -91,17 +91,19 @@ namespace FuryFootballClub.Api.Tests.Controllers
         [Test]
         public void Get_All()
         {
-            var matchFixtures = MockRepository.GenerateMock<IQueryable<MatchFixture>>();
-            var projectionExpression = MockRepository.GenerateMock<IProjectionExpression>();
-            var matchFixtureData = new List<MatchFixtureData>().AsQueryable();
+            var matchFixtures = new List<MatchFixture>();
+            matchFixtures.Add(new MatchFixture { Guid = Guid.Empty });
+            matchFixtures.Add(new MatchFixture { Guid = Guid.Empty });
+            matchFixtures.Add(new MatchFixture { Guid = Guid.Empty });
 
-            //_matchFixtureService.Expect(s => s.List()).Return(matchFixtures);
-            //matchFixtures.Expect(m => m.Project()).Return(projectionExpression);
-            //projectionExpression.Expect(p => p.To<MatchFixtureData>()).Return(matchFixtureData);
+            _matchFixtureService.Expect(s => s.List()).Return(matchFixtures);
 
-            //var result = _controller.Get();
+            Mapper.CreateMap<MatchFixture, MatchFixtureData>();
+            var result = _controller.Get();
 
-            //Assert.AreSame(matchFixtureData, result);
+            Assert.IsTrue(result.ToList()[0].Guid == matchFixtures[0].Guid);
+            Assert.IsTrue(result.ToList()[1].Guid == matchFixtures[1].Guid);
+            Assert.IsTrue(result.ToList()[2].Guid == matchFixtures[2].Guid);
         }
 
         #endregion

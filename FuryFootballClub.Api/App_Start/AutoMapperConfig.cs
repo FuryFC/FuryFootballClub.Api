@@ -11,7 +11,7 @@ namespace FuryFootballClub.Api
             Mapper.CreateMap<GetMatchFixtureRequest, MatchFixture>();
             Mapper.CreateMap<NewMatchFixtureRequest, MatchFixture>();
             Mapper.CreateMap<UpdateMatchFixtureRequest, MatchFixture>();
-            Mapper.CreateMap<MatchFixture, MatchFixtureData>().ForMember(d => d.Guid, o => o.MapFrom(s => s.Guid));
+            Mapper.CreateMap<MatchFixture, MatchFixtureData>();
 
             Mapper.AssertConfigurationIsValid();
         }
