@@ -1,9 +1,17 @@
-﻿using System;
+﻿using MongoRepository;
+using System;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace FuryFootballClub.Core.Domain
 {
-    public class MatchFixture
+    // TODO: convert to strongly typed
+    public class MatchFixture : IEntity<Guid>
     {
-        public Guid Guid { get; set; }
+        public Guid Id { get; set; }
+        public string Competition { get; set; }
+        public string HomeTeam { get; set; }
+        public string AwayTeam { get; set; }
+        public string Field { get; set; }
+        public DateTime MatchTime { get; set; }
     }
 }

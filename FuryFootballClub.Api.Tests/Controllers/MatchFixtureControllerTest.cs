@@ -14,6 +14,7 @@ using FuryFootballClub.Core.Domain;
 using FuryFootballClub.Core.Service;
 using NUnit.Framework;
 using Rhino.Mocks;
+using MongoRepository;
 
 namespace FuryFootballClub.Api.Tests.Controllers
 {
@@ -40,7 +41,7 @@ namespace FuryFootballClub.Api.Tests.Controllers
         #region Delete
 
         [Test]
-        public void Delete_RemovingExistingMatchFixture()
+        public void Delete_RemoveExistingMatchFixture()
         {
             var matchFixtureGuid = Guid.NewGuid();
             _matchFixtureService.Expect(s => s.Delete(matchFixtureGuid));
@@ -58,7 +59,7 @@ namespace FuryFootballClub.Api.Tests.Controllers
         public void Get_MatchFixtureByGuid()
         {
             var matchFixtureDto = new GetMatchFixtureRequest {Guid=Guid.NewGuid()};
-            var matchFixture = new MatchFixture() {Guid = matchFixtureDto.Guid};
+            var matchFixture = new MatchFixture() {Id = matchFixtureDto.Guid};
             var expectedMatchFixture = new MatchFixtureData();
 
             _mapper.Expect(m => m.Map<GetMatchFixtureRequest, MatchFixture>(matchFixtureDto)).Return(matchFixture);
@@ -74,10 +75,10 @@ namespace FuryFootballClub.Api.Tests.Controllers
         public void Get_GuidDoesExist()
         {
             var matchFixtureDto = new GetMatchFixtureRequest { Guid = Guid.Empty };
-            var matchFixture = new MatchFixture() { Guid = matchFixtureDto.Guid };
+            var matchFixture = new MatchFixture() { Id = matchFixtureDto.Guid };
 
             _mapper.Expect(m => m.Map<GetMatchFixtureRequest, MatchFixture>(matchFixtureDto)).Return(matchFixture);
-            _matchFixtureService.Expect(s => s.Find(matchFixture.Guid)).Return(null);
+            _matchFixtureService.Expect(s => s.Find(matchFixture.Id)).Return(null);
 
             var result = _controller.Get(matchFixtureDto);
 
@@ -92,18 +93,18 @@ namespace FuryFootballClub.Api.Tests.Controllers
         public void Get_All()
         {
             var matchFixtures = new List<MatchFixture>();
-            matchFixtures.Add(new MatchFixture { Guid = Guid.Empty });
-            matchFixtures.Add(new MatchFixture { Guid = Guid.Empty });
-            matchFixtures.Add(new MatchFixture { Guid = Guid.Empty });
+            matchFixtures.Add(new MatchFixture { Id = Guid.Empty });
+            matchFixtures.Add(new MatchFixture { Id = Guid.Empty });
+            matchFixtures.Add(new MatchFixture { Id = Guid.Empty });
 
             _matchFixtureService.Expect(s => s.List()).Return(matchFixtures);
 
             Mapper.CreateMap<MatchFixture, MatchFixtureData>();
             var result = _controller.Get();
 
-            Assert.IsTrue(result.ToList()[0].Guid == matchFixtures[0].Guid);
-            Assert.IsTrue(result.ToList()[1].Guid == matchFixtures[1].Guid);
-            Assert.IsTrue(result.ToList()[2].Guid == matchFixtures[2].Guid);
+            Assert.IsTrue(result.ToList()[0].Guid == matchFixtures[0].Id);
+            Assert.IsTrue(result.ToList()[1].Guid == matchFixtures[1].Id);
+            Assert.IsTrue(result.ToList()[2].Guid == matchFixtures[2].Id);
         }
 
         #endregion
