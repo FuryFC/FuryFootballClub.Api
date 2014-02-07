@@ -8,7 +8,7 @@ namespace FuryFootballClub.Core.Service
     public interface IMatchFixtureService
     {
         void Delete(Guid guid);
-        IList<MatchFixture> List();
+        IEnumerable<MatchFixture> List();
         Guid Save(MatchFixture matchFixture);
         MatchFixture Find(Guid guid);
     }

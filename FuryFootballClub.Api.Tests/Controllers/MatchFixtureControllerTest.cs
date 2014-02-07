@@ -58,15 +58,15 @@ namespace FuryFootballClub.Api.Tests.Controllers
         [Test]
         public void Get_MatchFixtureByGuid()
         {
-            var matchFixtureDto = new GetMatchFixtureRequest {Guid=Guid.NewGuid()};
-            var matchFixture = new MatchFixture() {Id = matchFixtureDto.Guid};
+            var matchFixtureDto = new GetMatchFixtureRequest {Id=Guid.NewGuid()};
+            var matchFixture = new MatchFixture() {Id = matchFixtureDto.Id};
             var expectedMatchFixture = new MatchFixtureData();
 
             _mapper.Expect(m => m.Map<GetMatchFixtureRequest, MatchFixture>(matchFixtureDto)).Return(matchFixture);
             _mapper.Expect(m => m.Map<MatchFixture, MatchFixtureData>(matchFixture)).Return(expectedMatchFixture);
-            _matchFixtureService.Expect(s => s.Find(matchFixtureDto.Guid)).Return(matchFixture);
+            _matchFixtureService.Expect(s => s.Find(matchFixtureDto.Id)).Return(matchFixture);
 
-            var result = _controller.Get(matchFixtureDto);
+            var result = _controller.Get(matchFixtureDto.Id);
 
             Assert.AreSame(expectedMatchFixture, result);
         }
@@ -74,13 +74,13 @@ namespace FuryFootballClub.Api.Tests.Controllers
         [Test]
         public void Get_GuidDoesExist()
         {
-            var matchFixtureDto = new GetMatchFixtureRequest { Guid = Guid.Empty };
-            var matchFixture = new MatchFixture() { Id = matchFixtureDto.Guid };
+            var matchFixtureDto = new GetMatchFixtureRequest { Id = Guid.Empty };
+            var matchFixture = new MatchFixture() { Id = matchFixtureDto.Id };
 
             _mapper.Expect(m => m.Map<GetMatchFixtureRequest, MatchFixture>(matchFixtureDto)).Return(matchFixture);
             _matchFixtureService.Expect(s => s.Find(matchFixture.Id)).Return(null);
 
-            var result = _controller.Get(matchFixtureDto);
+            var result = _controller.Get(matchFixtureDto.Id);
 
             Assert.IsNull(result);
         }
@@ -100,11 +100,11 @@ namespace FuryFootballClub.Api.Tests.Controllers
             _matchFixtureService.Expect(s => s.List()).Return(matchFixtures);
 
             Mapper.CreateMap<MatchFixture, MatchFixtureData>();
-            var result = _controller.Get();
+            var result = _controller.GetAll();
 
-            Assert.IsTrue(result.ToList()[0].Guid == matchFixtures[0].Id);
-            Assert.IsTrue(result.ToList()[1].Guid == matchFixtures[1].Id);
-            Assert.IsTrue(result.ToList()[2].Guid == matchFixtures[2].Id);
+            Assert.IsTrue(result.ToList()[0].Id == matchFixtures[0].Id);
+            Assert.IsTrue(result.ToList()[1].Id == matchFixtures[1].Id);
+            Assert.IsTrue(result.ToList()[2].Id == matchFixtures[2].Id);
         }
 
         #endregion
@@ -145,13 +145,13 @@ namespace FuryFootballClub.Api.Tests.Controllers
         [Test]
         public void Put_UpdateExistingMatchFixture()
         {
-            var matchFixtureDto = new UpdateMatchFixtureRequest {Guid = Guid.NewGuid()};
+            var matchFixtureDto = new UpdateMatchFixtureRequest { Id = Guid.NewGuid() };
             var matchFixture = new MatchFixture();
             //var newUri = string.Format("http://localhost:8080/MatchFixture/{0}", matchFixtureDto.Guid);
 
 
             _mapper.Expect(m => m.Map<UpdateMatchFixtureRequest, MatchFixture>(matchFixtureDto)).Return(matchFixture);
-            _matchFixtureService.Expect(s => s.Save(matchFixture)).Return(matchFixtureDto.Guid);
+            _matchFixtureService.Expect(s => s.Save(matchFixture)).Return(matchFixtureDto.Id);
 
             HttpResponseMessage result = _controller.Put(matchFixtureDto);
 

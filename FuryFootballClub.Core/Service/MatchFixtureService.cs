@@ -9,6 +9,12 @@ namespace FuryFootballClub.Core.Service
     {
         private readonly IMatchFixtureRepository _matchFixtureRepository;
 
+        // TODO: Use dependency injection here instead of this default constructor
+        public MatchFixtureService()
+        {
+            _matchFixtureRepository = new MatchFixtureRepository();
+        }
+
         public MatchFixtureService(IMatchFixtureRepository matchFixtureRepository)
         {
             _matchFixtureRepository = matchFixtureRepository;
@@ -16,22 +22,23 @@ namespace FuryFootballClub.Core.Service
 
         public void Delete(Guid guid)
         {
-            throw new System.NotImplementedException();
+            _matchFixtureRepository.Delete(guid);
         }
 
-        public IList<MatchFixture> List()
+        public IEnumerable<MatchFixture> List()
         {
-            throw new System.NotImplementedException();
+            return _matchFixtureRepository.List();
         }
 
         public Guid Save(MatchFixture matchFixture)
         {
-            throw new System.NotImplementedException();
+            _matchFixtureRepository.Save(matchFixture);
+            return matchFixture.Id;
         }
 
         public MatchFixture Find(Guid guid)
         {
-            throw new System.NotImplementedException();
+            return _matchFixtureRepository.FindByGuid(guid);
         }
     }
 }

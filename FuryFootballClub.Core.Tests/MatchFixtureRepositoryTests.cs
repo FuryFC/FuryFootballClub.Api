@@ -2,7 +2,6 @@
 using FuryFootballClub.Core.Repository;
 using FuryFootballClub.Core.Service;
 using MongoRepository;
-using log4net;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -32,7 +31,7 @@ namespace FuryFootballClub.Core.Tests
             var fixtures = _matchFixtureRepository.List();
             foreach(var fixture in fixtures)
             {
-                _matchFixtureRepository.Delete(fixture);
+                _matchFixtureRepository.Delete(fixture.Id);
             }
 
             /* Create some test data here */
@@ -53,7 +52,7 @@ namespace FuryFootballClub.Core.Tests
         {
             foreach(var fixture in _fixtures) 
             {
-                _matchFixtureRepository.Delete(fixture);
+                _matchFixtureRepository.Delete(fixture.Id);
             }
        }
 
@@ -65,7 +64,7 @@ namespace FuryFootballClub.Core.Tests
             Guid guid = _deletable.Id;
 
             Assert.IsNotNull(_matchFixtureRepository.FindByGuid(guid));
-            _matchFixtureRepository.Delete(_deletable);
+            _matchFixtureRepository.Delete(_deletable.Id);
             Assert.IsNull(_matchFixtureRepository.FindByGuid(guid));
         }
 

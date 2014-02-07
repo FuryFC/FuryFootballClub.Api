@@ -10,7 +10,7 @@ namespace FuryFootballClub.Api
         public void RegisterModelMappings()
         {
             Mapper.CreateMap<GetMatchFixtureRequest, MatchFixture>();
-            Mapper.CreateMap<NewMatchFixtureRequest, MatchFixture>();
+            Mapper.CreateMap<NewMatchFixtureRequest, MatchFixture>().ForMember(x => x.Id, opt => opt.Ignore());
             Mapper.CreateMap<UpdateMatchFixtureRequest, MatchFixture>();
             Mapper.CreateMap<MatchFixture, MatchFixtureData>();
 

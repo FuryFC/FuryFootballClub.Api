@@ -16,6 +16,15 @@ namespace FuryFootballClub.Api.Controllers
         private readonly IMatchFixtureService _matchFixtureService;
         private readonly IMappingEngine _mapper;
 
+        // TODO: Add Dependency injection
+        public MatchFixtureController()
+        {
+            _matchFixtureService = new MatchFixtureService();
+            var config = new AutoMapperConfig();
+            config.RegisterModelMappings();
+            _mapper = Mapper.Engine;
+        }
+
         public MatchFixtureController(IMatchFixtureService matchFixtureService, IMappingEngine mapper)
         {
             _matchFixtureService = matchFixtureService;
@@ -28,15 +37,19 @@ namespace FuryFootballClub.Api.Controllers
             return Request.CreateResponse(HttpStatusCode.NoContent);
         }
 
-        public IQueryable<MatchFixtureData> Get()
+        [ActionName("GetAll")]
+        public IQueryable<MatchFixtureData> GetAll()
         {
             var matchFixtures = _matchFixtureService.List();
             return matchFixtures.AsQueryable().Project().To<MatchFixtureData>();
         }
 
-        public MatchFixtureData Get(GetMatchFixtureRequest getMatchFixtureRequest)
+        [ActionName("Get")]
+        public MatchFixtureData Get(Guid id)
         {
-            var matchFixture = _matchFixtureService.Find(getMatchFixtureRequest.Guid);
+            if (id == null) { throw new HttpRequestException("Missing the ID for a single get request"); }
+
+            var matchFixture = _matchFixtureService.Find(id);
             var matchFixtureData = matchFixture == null ? null : _mapper.Map<MatchFixture, MatchFixtureData>(matchFixture);
             return matchFixtureData;
         }
@@ -55,7 +68,7 @@ namespace FuryFootballClub.Api.Controllers
         public HttpResponseMessage Put(UpdateMatchFixtureRequest updateMatchFixtureRequest)
         {
             // TODO: Send back validation errors
-            if (updateMatchFixtureRequest.Guid == Guid.Empty) { return Request.CreateResponse(HttpStatusCode.BadRequest); }
+            if (updateMatchFixtureRequest.Id == Guid.Empty) { return Request.CreateResponse(HttpStatusCode.BadRequest); }
 
             var matchFixture = _mapper.Map<UpdateMatchFixtureRequest, MatchFixture>(updateMatchFixtureRequest);
             _matchFixtureService.Save(matchFixture);

@@ -1,5 +1,6 @@
 ﻿using FuryFootballClub.Core.Domain;
 using System.Collections.Generic;
+using System;
 
 namespace FuryFootballClub.Core.Repository
 {
@@ -18,7 +19,7 @@ namespace FuryFootballClub.Core.Repository
         /**
          * Single Delete
          */
-        void Delete(MatchFixture fixture);
+        void Delete(Guid guid);
 
         /**
          * Bulk retrieval
@@ -28,6 +29,6 @@ namespace FuryFootballClub.Core.Repository
         /**
          * Find a single instance
          */
-        MatchFixture FindByGuid(System.Guid guid);
+        MatchFixture FindByGuid(Guid guid);
     }
 }
