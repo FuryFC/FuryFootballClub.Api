@@ -100,7 +100,7 @@ namespace FuryFootballClub.Api.Tests.Controllers
             _matchFixtureService.Expect(s => s.List()).Return(matchFixtures);
 
             Mapper.CreateMap<MatchFixture, MatchFixtureData>();
-            var result = _controller.GetAll();
+            var result = _controller.Get();
 
             Assert.IsTrue(result.ToList()[0].Id == matchFixtures[0].Id);
             Assert.IsTrue(result.ToList()[1].Id == matchFixtures[1].Id);
