@@ -34,7 +34,7 @@ namespace FuryFootballClub.Api.Controllers
         public HttpResponseMessage Delete(Guid guid)
         {
             _matchFixtureService.Delete(guid);
-            return Request.CreateResponse(HttpStatusCode.NoContent);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
 //        [ActionName("GetAll")]
@@ -73,7 +73,7 @@ namespace FuryFootballClub.Api.Controllers
             var matchFixture = _mapper.Map<UpdateMatchFixtureRequest, MatchFixture>(updateMatchFixtureRequest);
             _matchFixtureService.Save(matchFixture);
 
-            return Request.CreateResponse(HttpStatusCode.NoContent, matchFixture);
+            return Request.CreateResponse(HttpStatusCode.OK, matchFixture);
         }
     }
 }
