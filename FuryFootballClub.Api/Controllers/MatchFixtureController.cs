@@ -34,7 +34,7 @@ namespace FuryFootballClub.Api.Controllers
         public HttpResponseMessage Delete(Guid guid)
         {
             _matchFixtureService.Delete(guid);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.NoContent);
         }
 
 //        [ActionName("GetAll")]

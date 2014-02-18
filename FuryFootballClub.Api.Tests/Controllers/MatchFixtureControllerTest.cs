@@ -155,7 +155,7 @@ namespace FuryFootballClub.Api.Tests.Controllers
 
             HttpResponseMessage result = _controller.Put(matchFixtureDto);
 
-            Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode);
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             // TODO: Test newly added resource URI.
             //Assert.AreEqual(newUri, result.Headers.Location);
         }

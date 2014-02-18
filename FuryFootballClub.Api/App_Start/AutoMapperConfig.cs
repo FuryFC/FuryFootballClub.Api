@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FuryFootballClub.Api.Models.MatchFixture;
 using FuryFootballClub.Core.Domain;
-using MongoRepository;
 
 namespace FuryFootballClub.Api
 {

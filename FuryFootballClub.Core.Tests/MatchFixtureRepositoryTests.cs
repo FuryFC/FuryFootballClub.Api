@@ -1,11 +1,7 @@
 ﻿using FuryFootballClub.Core.Domain;
 using FuryFootballClub.Core.Repository;
-using FuryFootballClub.Core.Service;
-using MongoRepository;
 using NUnit.Framework;
-using Rhino.Mocks;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace FuryFootballClub.Core.Tests
