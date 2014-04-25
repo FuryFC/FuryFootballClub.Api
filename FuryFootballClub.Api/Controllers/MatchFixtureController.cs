@@ -37,14 +37,12 @@ namespace FuryFootballClub.Api.Controllers
             return Request.CreateResponse(HttpStatusCode.NoContent);
         }
 
-//        [ActionName("GetAll")]
         public IQueryable<MatchFixtureData> Get()
         {
             var matchFixtures = _matchFixtureService.List();
             return matchFixtures.AsQueryable().Project().To<MatchFixtureData>();
         }
 
-//        [ActionName("Get")]
         public MatchFixtureData Get(Guid id)
         {
             if (id == null) { throw new HttpRequestException("Missing the ID for a single get request"); }

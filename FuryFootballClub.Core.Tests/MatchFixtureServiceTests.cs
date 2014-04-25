@@ -29,6 +29,7 @@ namespace FuryFootballClub.Core.Tests
             _matchFixtureRepository.Expect(s => s.Delete(matchFixtureGuid));
 
             _matchFixtureService.Delete(matchFixtureGuid);
+            _matchFixtureRepository.VerifyAllExpectations();
         }
 
         #endregion
@@ -48,6 +49,7 @@ namespace FuryFootballClub.Core.Tests
             var result = _matchFixtureService.List();
 
             Assert.AreSame(fixtures,result);
+            _matchFixtureRepository.VerifyAllExpectations();
         }
         #endregion
 
@@ -62,6 +64,7 @@ namespace FuryFootballClub.Core.Tests
             var guid = _matchFixtureService.Save(fixture);
 
             Assert.AreEqual(fixture.Id, guid);
+            _matchFixtureRepository.VerifyAllExpectations();
         }
         #endregion
         
@@ -74,6 +77,7 @@ namespace FuryFootballClub.Core.Tests
             _matchFixtureRepository.Expect(s => s.FindByGuid(matchFixtureGuid));
 
             _matchFixtureService.Find(matchFixtureGuid);
+            _matchFixtureRepository.VerifyAllExpectations();
         }
         #endregion
     }

@@ -40,7 +40,7 @@ namespace FuryFootballClub.Core.Repository
 
         public IEnumerable<MatchFixture> List()
         {
-            return _context.MatchFixtures;
+            return _context.MatchFixtures.ToList();
         }
 
         public MatchFixture FindByGuid(System.Guid guid)

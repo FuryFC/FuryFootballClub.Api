@@ -14,7 +14,6 @@ using FuryFootballClub.Core.Domain;
 using FuryFootballClub.Core.Service;
 using NUnit.Framework;
 using Rhino.Mocks;
-using MongoRepository;
 
 namespace FuryFootballClub.Api.Tests.Controllers
 {
@@ -49,6 +48,7 @@ namespace FuryFootballClub.Api.Tests.Controllers
             var result = _controller.Delete(matchFixtureGuid);
 
             Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode);
+            _matchFixtureService.VerifyAllExpectations();
         }
 
         #endregion
@@ -62,27 +62,30 @@ namespace FuryFootballClub.Api.Tests.Controllers
             var matchFixture = new MatchFixture() {Id = matchFixtureDto.Id};
             var expectedMatchFixture = new MatchFixtureData();
 
-            _mapper.Expect(m => m.Map<GetMatchFixtureRequest, MatchFixture>(matchFixtureDto)).Return(matchFixture);
+            // cmm changed this to take in GUID instead _mapper.Expect(m => m.Map<GetMatchFixtureRequest, MatchFixture>(matchFixtureDto)).Return(matchFixture);
             _mapper.Expect(m => m.Map<MatchFixture, MatchFixtureData>(matchFixture)).Return(expectedMatchFixture);
             _matchFixtureService.Expect(s => s.Find(matchFixtureDto.Id)).Return(matchFixture);
 
             var result = _controller.Get(matchFixtureDto.Id);
 
             Assert.AreSame(expectedMatchFixture, result);
+            _matchFixtureService.VerifyAllExpectations();
+            _mapper.VerifyAllExpectations();
         }
 
         [Test]
-        public void Get_GuidDoesExist()
+        public void Get_GuidDoesNotExist()
         {
             var matchFixtureDto = new GetMatchFixtureRequest { Id = Guid.Empty };
             var matchFixture = new MatchFixture() { Id = matchFixtureDto.Id };
 
-            _mapper.Expect(m => m.Map<GetMatchFixtureRequest, MatchFixture>(matchFixtureDto)).Return(matchFixture);
             _matchFixtureService.Expect(s => s.Find(matchFixture.Id)).Return(null);
 
             var result = _controller.Get(matchFixtureDto.Id);
 
             Assert.IsNull(result);
+            _matchFixtureService.VerifyAllExpectations();
+            _mapper.VerifyAllExpectations();
         }
 
         #endregion
@@ -105,6 +108,7 @@ namespace FuryFootballClub.Api.Tests.Controllers
             Assert.IsTrue(result.ToList()[0].Id == matchFixtures[0].Id);
             Assert.IsTrue(result.ToList()[1].Id == matchFixtures[1].Id);
             Assert.IsTrue(result.ToList()[2].Id == matchFixtures[2].Id);
+            _matchFixtureService.VerifyAllExpectations();
         }
 
         #endregion
@@ -126,6 +130,8 @@ namespace FuryFootballClub.Api.Tests.Controllers
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             // TODO: Test newly added resource URI.
             //Assert.AreEqual(matchFixtureGuid, result.Guid);
+            _matchFixtureService.VerifyAllExpectations();
+            _mapper.VerifyAllExpectations();
         }
 
         [Test]
@@ -158,6 +164,8 @@ namespace FuryFootballClub.Api.Tests.Controllers
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             // TODO: Test newly added resource URI.
             //Assert.AreEqual(newUri, result.Headers.Location);
+            _matchFixtureService.VerifyAllExpectations();
+            _mapper.VerifyAllExpectations();
         }
 
         [Test]
