@@ -3,6 +3,7 @@ using FuryFootballClub.Core.Repository;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FuryFootballClub.Core.Tests
 {
@@ -25,14 +26,14 @@ namespace FuryFootballClub.Core.Tests
 
             /* Wipe out all match users from the test database */
             var users = _userRepository.List();
-            foreach(var user in users)
+            foreach (var user in users)
             {
                 _userRepository.Delete(user.Id);
             }
 
             /* Create some test data here */
             _deletable = new User() { PrimaryEmail = "offender@gmail.com", AccessToken = "BlahBlah", LastLogin = _today.AddDays(-1.0) };
-            _updateable = new User() { PrimaryEmail = "defender@gmail.com"  };
+            _updateable = new User() { PrimaryEmail = "defender@gmail.com" };
             _find1 = new User() { PrimaryEmail = "offender1@gmail.com", AccessToken = "BlahBlah2", LastLogin = _today.AddDays(-1.0) };
             _find2 = new User() { PrimaryEmail = "offender2@gmail.com" };
             _users = new List<User>();
@@ -46,11 +47,11 @@ namespace FuryFootballClub.Core.Tests
         [TearDown]
         public void TearDown()
         {
-            foreach(var user in _users) 
+            foreach (var user in _users)
             {
                 _userRepository.Delete(user.Id);
             }
-       }
+        }
 
         #region Delete
 
@@ -68,12 +69,13 @@ namespace FuryFootballClub.Core.Tests
 
         #region Retrieve
 
-        private void AssertUserEqual(User target, User result) 
+        private void AssertUserEqual(User target, User result)
         {
             Assert.AreEqual(target.Id, result.Id);
             Assert.AreEqual(target.PrimaryEmail, result.PrimaryEmail);
             Assert.AreEqual(target.AccessToken, result.AccessToken);
             Assert.AreEqual(target.LastLogin, result.LastLogin);
+            Assert.AreEqual(target.Claims, result.Claims);
         }
 
         [Test]
@@ -140,13 +142,38 @@ namespace FuryFootballClub.Core.Tests
         }
 
         [Test]
+        public void Insert_OneWithClaims()
+        {
+            var guid = Guid.NewGuid();
+            var user = new User()
+            {
+                PrimaryEmail = "blah3.1@blah.com",
+            };
+
+            // TODO: WHY CAN'T WE ADD THE CLAIMS BEFORE THE FIRST SAVE?
+            _users.Add(user);
+            _userRepository.Save(user);
+
+            user.Claims = new List<UserClaim>()
+                {
+                    new UserClaim() { Key = "ClaimKey1", Value = "ClaimValue1" },
+                    new UserClaim() { Key = "ClaimKey2", Value = "ClaimValue2" }
+                };
+            _userRepository.Save(user);
+
+            var result = _userRepository.FindByGuid(user.Id);
+
+            AssertUserEqual(user, result);
+        }
+
+        [Test]
         public void Insert_Bulk()
         {
             var one = new User() { PrimaryEmail = "BabySeals3@gmail.com", AccessToken = "VH Dome, field 11", LastLogin = _today.AddDays(3.0) };
             var two = new User() { PrimaryEmail = "BabySeals4@gmail.com", AccessToken = "VH Dome, field 12", LastLogin = _today.AddDays(3.0) };
             _users.Add(one);
             _users.Add(two);
-            _userRepository.Add(new [] { one, two });
+            _userRepository.Add(new[] { one, two });
 
             var result1 = _userRepository.FindByGuid(one.Id);
             var result2 = _userRepository.FindByGuid(two.Id);
@@ -168,6 +195,38 @@ namespace FuryFootballClub.Core.Tests
             var result = _userRepository.FindByGuid(_updateable.Id);
 
             AssertUserEqual(_updateable, result);
+        }
+
+        [Test]
+        public void Update_OneRemoveClaim()
+        {
+            var guid = Guid.NewGuid();
+            var user = new User()
+            {
+                PrimaryEmail = "blah3.8@blah.com",
+            };
+
+            _users.Add(user);
+            _userRepository.Save(user);
+            user.Claims = new List<UserClaim>()
+                {
+                    new UserClaim() { Key = "ClaimKey1", Value = "ClaimValue1" },
+                    new UserClaim() { Key = "ClaimKey2", Value = "ClaimValue2" }
+                };
+            _userRepository.Save(user);
+           
+
+            var updateUser = _userRepository.FindByGuid(user.Id);
+
+            _userRepository.DeleteClaimFromUser(updateUser.Claims.Where(o => o.Key == "ClaimKey1").FirstOrDefault());
+
+            _userRepository.Save(updateUser);
+
+            var result = _userRepository.FindByGuid(user.Id);
+
+            Assert.AreEqual(1, user.Claims.Count);
+
+            AssertUserEqual(user, result);
         }
 
         #endregion

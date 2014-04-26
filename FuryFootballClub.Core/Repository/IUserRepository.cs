@@ -40,5 +40,10 @@ namespace FuryFootballClub.Core.Repository
          * Find a single instance
          */
         User FindByEmail(string email);
+
+        /**
+         * Remove a claim from the specified user
+         */
+        void DeleteClaimFromUser(UserClaim userClaim);
     }
 }

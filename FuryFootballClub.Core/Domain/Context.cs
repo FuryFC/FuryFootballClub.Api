@@ -13,6 +13,7 @@ namespace FuryFootballClub.Core.Domain
     {
         public DbSet<MatchFixture> MatchFixtures { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserClaim> UserClaims { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

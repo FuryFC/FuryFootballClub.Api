@@ -29,11 +29,17 @@ namespace FuryFootballClub.Core.Repository
          */
         public void Delete(Guid guid)
         {
-            var matchFixture = _context.Users.Find(guid);
+            var user = _context.Users.Find(guid);
             /* Make sure it exists before deleting it */
-            if (matchFixture != null)
+            if (user != null)
             {
-                _context.Users.Remove(matchFixture);
+                if (user.Claims != null && user.Claims.Count > 0)
+                {
+                    _context.UserClaims.RemoveRange(user.Claims.ToList());
+                    _context.SaveChanges();
+                    user.Claims = new List<UserClaim>();
+                }
+                _context.Users.Remove(user);
                 _context.SaveChanges();
             }
         }
@@ -51,9 +57,9 @@ namespace FuryFootballClub.Core.Repository
         public User FindByAccessToken(string accessToken)
         {
             // Query for the Blog named ADO.NET Blog 
-           return _context.Users
-                            .Where(u => u.AccessToken == accessToken)
-                            .FirstOrDefault();
+            return _context.Users
+                             .Where(u => u.AccessToken == accessToken)
+                             .FirstOrDefault();
         }
 
         public User FindByEmail(string email)
@@ -65,6 +71,9 @@ namespace FuryFootballClub.Core.Repository
         }
 
 
+        /**
+         * Note: Do not just remove claims, use the DeleteClaimFromUser method for that, otherwise it will not work
+         */
         public void Save(User user)
         {
             if (user.Id.Equals(Guid.Empty))
@@ -77,7 +86,36 @@ namespace FuryFootballClub.Core.Repository
                 _context.Users.Attach(user);
             }
             _context.SaveChanges();
+
+            /* 
+             * Deal with claims here because they really are a sub-class
+             */
+            if (user.Claims != null)
+            {
+                foreach (UserClaim claim in user.Claims)
+                {
+                    if (claim.User == null)
+                    {
+                        _context.UserClaims.Add(claim);
+                        claim.User = user;
+                    }
+                    else
+                    {
+                        _context.UserClaims.Attach(claim);
+                    }
+                }
+            }
+
+            _context.SaveChanges();
         }
 
+        public void DeleteClaimFromUser(UserClaim userClaim)
+        {
+            if (userClaim.User == null) userClaim.User = _context.Users.Find(userClaim.UserId);
+            userClaim.User.Claims.Remove(userClaim);
+            userClaim.User = null;
+            _context.UserClaims.Remove(userClaim);
+            _context.SaveChanges();
+        }
     }
 }

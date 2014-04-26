@@ -98,6 +98,7 @@
     <Compile Include="Domain\Context.cs" />
     <Compile Include="Domain\User.cs" />
     <Compile Include="Domain\MatchFixture.cs" />
+    <Compile Include="Domain\UserClaim.cs" />
     <Compile Include="Domain\UserProfile.cs" />
     <Compile Include="Migrations\201404181656433_InitialSetup.cs" />
     <Compile Include="Migrations\201404181656433_InitialSetup.Designer.cs">
@@ -110,6 +111,18 @@
     <Compile Include="Migrations\201404221329313_NothingHopefully.cs" />
     <Compile Include="Migrations\201404221329313_NothingHopefully.Designer.cs">
       <DependentUpon>201404221329313_NothingHopefully.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404250410336_AddRestOfTokenToUser.cs" />
+    <Compile Include="Migrations\201404250410336_AddRestOfTokenToUser.Designer.cs">
+      <DependentUpon>201404250410336_AddRestOfTokenToUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404250426289_AddingClaims.cs" />
+    <Compile Include="Migrations\201404250426289_AddingClaims.Designer.cs">
+      <DependentUpon>201404250426289_AddingClaims.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404250431022_FixUserClaimKey.cs" />
+    <Compile Include="Migrations\201404250431022_FixUserClaimKey.Designer.cs">
+      <DependentUpon>201404250431022_FixUserClaimKey.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Repository\IUserRepository.cs" />
@@ -137,6 +150,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404221329313_NothingHopefully.resx">
       <DependentUpon>201404221329313_NothingHopefully.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404250410336_AddRestOfTokenToUser.resx">
+      <DependentUpon>201404250410336_AddRestOfTokenToUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404250426289_AddingClaims.resx">
+      <DependentUpon>201404250426289_AddingClaims.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404250431022_FixUserClaimKey.resx">
+      <DependentUpon>201404250431022_FixUserClaimKey.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

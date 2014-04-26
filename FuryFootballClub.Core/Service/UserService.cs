@@ -3,6 +3,7 @@ using FuryFootballClub.Core.Repository;
 using Google.Apis.Auth.OAuth2.Responses;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace FuryFootballClub.Core.Service
 {
@@ -57,12 +58,17 @@ namespace FuryFootballClub.Core.Service
             var user = new User();
             user.setProfile(userProfile);
             // TODO: Set basic claims here
+            user.Claims = new List<UserClaim>()
+            {
+                // new UserClaim() { Key = 'SomeClaimsType', Value = 'SomeClaimsValue' }
+            };
+
             return user;
         }
 
         public void Login(User user, TokenResponse state)
         {
-            user.AccessToken = state.AccessToken;
+            user.setToken(state);
             user.LastLogin = DateTime.UtcNow;
             _userRepository.Save(user);
         }

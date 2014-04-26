@@ -67,6 +67,7 @@ namespace FuryFootballClub.Core.Tests
             Assert.AreEqual(user.Id, guid);
             _userRepository.VerifyAllExpectations();
         }
+
         #endregion
 
         #region CreateBasicUser

@@ -8,6 +8,9 @@ using AutoMapper.QueryableExtensions;
 using FuryFootballClub.Api.Models.MatchFixture;
 using FuryFootballClub.Core.Domain;
 using FuryFootballClub.Core.Service;
+using System.IdentityModel.Claims;
+using System.Security.Permissions;
+using System.IdentityModel.Services;
 
 namespace FuryFootballClub.Api.Controllers
 {
@@ -31,6 +34,7 @@ namespace FuryFootballClub.Api.Controllers
             _mapper = mapper;
         }
 
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Operation = "Delete", Resource = "MatchFixture")]
         public HttpResponseMessage Delete(Guid guid)
         {
             _matchFixtureService.Delete(guid);
@@ -40,6 +44,7 @@ namespace FuryFootballClub.Api.Controllers
         public IQueryable<MatchFixtureData> Get()
         {
             var matchFixtures = _matchFixtureService.List();
+            if (matchFixtures == null) return null;
             return matchFixtures.AsQueryable().Project().To<MatchFixtureData>();
         }
 
@@ -52,6 +57,7 @@ namespace FuryFootballClub.Api.Controllers
             return matchFixtureData;
         }
 
+        [ClaimsPrincipalPermission(SecurityAction.Demand,Operation="Create",Resource="MatchFixture")]
         public HttpResponseMessage Post(NewMatchFixtureRequest newMatchFixtureRequest)
         {
             // TODO: Send back validation errors
@@ -63,6 +69,7 @@ namespace FuryFootballClub.Api.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, matchFixture);
         }
 
+        [ClaimsPrincipalPermission(SecurityAction.Demand, Operation = "Update", Resource = "MatchFixture")]
         public HttpResponseMessage Put(UpdateMatchFixtureRequest updateMatchFixtureRequest)
         {
             // TODO: Send back validation errors
