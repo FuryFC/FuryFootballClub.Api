@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using FuryFootballClub.Api.Auth;
+using Thinktecture.IdentityModel.Authorization.WebApi;
 
 namespace FuryFootballClub.Api
 {
@@ -28,6 +29,10 @@ namespace FuryFootballClub.Api
             );
 
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+
+            // add global authorization filter
+            config.Filters.Add(new ClaimsAuthorizeAttribute());
+
         }
     }
 }

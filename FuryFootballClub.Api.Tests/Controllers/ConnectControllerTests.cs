@@ -89,8 +89,7 @@ namespace FuryFootballClub.Api.Tests.Controllers
 
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             
-            var jsonString = ((ObjectContent)result.Content).ReadAsAsync<string>().Result;
-            var resultState = (TokenResponse)JsonConvert.DeserializeObject(jsonString, typeof(TokenResponse));
+            var resultState = ((ObjectContent)result.Content).ReadAsAsync<TokenResponse>().Result;
 
             Assert.AreEqual(authState.AccessToken, resultState.AccessToken);
             Assert.AreEqual(authState.RefreshToken, resultState.RefreshToken);

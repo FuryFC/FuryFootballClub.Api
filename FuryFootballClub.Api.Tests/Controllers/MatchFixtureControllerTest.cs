@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Web.Http;
-using System.Web.Http.Hosting;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
+﻿using AutoMapper;
 using FuryFootballClub.Api.Controllers;
 using FuryFootballClub.Api.Models.MatchFixture;
 using FuryFootballClub.Core.Domain;
 using FuryFootballClub.Core.Service;
 using NUnit.Framework;
 using Rhino.Mocks;
-using System.Threading;
-using System.Security.Claims;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Hosting;
 
 namespace FuryFootballClub.Api.Tests.Controllers
 {
@@ -37,12 +33,6 @@ namespace FuryFootballClub.Api.Tests.Controllers
             var request = MockRepository.GenerateMock<HttpRequestMessage>();
             _controller.Request = request;
             _controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
-
-            /* Setup claims */
-            var claims = new List<Claim>() {
-                new Claim(ClaimTypes.Role, "TeamManager")
-            };
-            Thread.CurrentPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims));
         }
 
         #region Delete
@@ -185,48 +175,5 @@ namespace FuryFootballClub.Api.Tests.Controllers
         }
 
         #endregion
-
-        #region security
-
-        [Test]
-        [ExpectedException(typeof(System.Security.SecurityException))]
-        public void NoPermission_Delete()
-        {
-            Thread.CurrentPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
-            _controller.Delete(Guid.NewGuid());
-        }
-
-        [Test]
-        [ExpectedException(typeof(System.Security.SecurityException))]
-        public void NoPermission_Put()
-        {
-            Thread.CurrentPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
-            _controller.Put(new UpdateMatchFixtureRequest());
-        }
-
-        [Test]
-        [ExpectedException(typeof(System.Security.SecurityException))]
-        public void NoPermission_Post()
-        {
-            Thread.CurrentPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
-            _controller.Post(new NewMatchFixtureRequest());
-        }
-
-        [Test]
-        public void NoPermission_GetOne()
-        {
-            Thread.CurrentPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
-            _controller.Get(Guid.NewGuid());
-        }
-
-        [Test]
-        public void NoPermission_GetAll()
-        {
-            Thread.CurrentPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
-            _controller.Get();
-        }
-
-        #endregion
-
     }
 }

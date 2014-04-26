@@ -2,7 +2,14 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-
+using Newtonsoft.Json;
+using Google.Apis.Auth.OAuth2.Responses;
+using FuryFootballClub.Core.Service;
+using System.Net;
+using System.Collections.Generic;
+using FuryFootballClub.Core.Domain;
+using System.Security.Claims;
+using System.Security;
 
 namespace FuryFootballClub.Api.Auth
 {
@@ -15,25 +22,37 @@ namespace FuryFootballClub.Api.Auth
             var headers = request.Headers;
             if (headers.Contains(AuthToken))
             {
-                string auth = headers.GetValues(AuthToken).First();
-                // Carlos, you were here, about to create a claims principal after pulling user info from google+
-            }
-//            HttpContextBase httpContext;
-//            string userName;
-//           HashSet<string> scope;
-            //       if (!request.TryGetHttpContext(out httpContext))
-            //         throw new InvalidOperationException(“HttpContext must not be null.”);
+                var authJson = headers.GetValues(AuthToken).First();
 
-            // var resourceServer = new ResourceServer(new StandardAccessTokenAnalyzer(signing,encrypting));
-            //   var error = resourceServer.VerifyAccess(httpContext.Request, out userName, out scope);
-            // if (error != null)
-            //   return Task<HttpResponseMessage>.Factory.StartNew(error.ToHttpResponseMessage);
-            //   var identity = new ClaimsIdentity(scope.Select(s => new Claim(s, s)));
-            //    if (!string.IsNullOrEmpty(userName))
-            //         identity.Claims.Add(new Claim(ClaimTypes.Name, userName));
-            //    httpContext.User = ClaimsPrincipal.CreateFromIdentity(identity);
-            //    Thread.CurrentPrincipal = httpContext.User;
-            return base.SendAsync(request, cancellationToken);
+                /* Grab the user from the access token */
+                var auth = (TokenResponse)JsonConvert.DeserializeObject(authJson, typeof(TokenResponse));
+
+                var userService = new UserService();
+                var user = userService.FindByAccessToken(auth.AccessToken);
+                if (user == null)
+                {
+                    var response = request.CreateResponse(HttpStatusCode.Unauthorized);
+                    response.ReasonPhrase = "Could not find user associated with that access token";
+                    return Task.FromResult<HttpResponseMessage>(response);
+                }
+
+                // TODO: Check refresh token somewhere
+                var claims = new List<Claim>();
+                foreach(UserClaim claim in user.Claims)
+                {
+                    claims.Add(new Claim(claim.Key, claim.Value));
+                }
+                Thread.CurrentPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims));
+            }
+            try
+            {
+                return base.SendAsync(request, cancellationToken);
+            } catch(SecurityException e)
+            {
+                var response = request.CreateResponse(HttpStatusCode.Unauthorized);
+                response.ReasonPhrase = "You are not authorized for this action";
+                return Task.FromResult<HttpResponseMessage>(response);
+            }
         }
     }
 }

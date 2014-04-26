@@ -50,8 +50,7 @@ namespace FuryFootballClub.Api.Controllers
             _userService.Login(user, state);
 
             // Return the state to the user
-            var a = JsonConvert.SerializeObject(state); 
-            return Request.CreateResponse(HttpStatusCode.OK, a);
+            return Request.CreateResponse(HttpStatusCode.OK, state);
         }
     }
 }

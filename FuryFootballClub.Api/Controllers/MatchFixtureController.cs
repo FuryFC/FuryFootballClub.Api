@@ -11,6 +11,8 @@ using FuryFootballClub.Core.Service;
 using System.IdentityModel.Claims;
 using System.Security.Permissions;
 using System.IdentityModel.Services;
+using System.Web.Mvc;
+using Thinktecture.IdentityModel.Authorization.WebApi;
 
 namespace FuryFootballClub.Api.Controllers
 {
@@ -34,7 +36,7 @@ namespace FuryFootballClub.Api.Controllers
             _mapper = mapper;
         }
 
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Operation = "Delete", Resource = "MatchFixture")]
+        [ClaimsAuthorize("Delete", "MatchFixture")]
         public HttpResponseMessage Delete(Guid guid)
         {
             _matchFixtureService.Delete(guid);
@@ -57,7 +59,7 @@ namespace FuryFootballClub.Api.Controllers
             return matchFixtureData;
         }
 
-        [ClaimsPrincipalPermission(SecurityAction.Demand,Operation="Create",Resource="MatchFixture")]
+        [ClaimsAuthorize("Create","MatchFixture")]
         public HttpResponseMessage Post(NewMatchFixtureRequest newMatchFixtureRequest)
         {
             // TODO: Send back validation errors
@@ -69,7 +71,7 @@ namespace FuryFootballClub.Api.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, matchFixture);
         }
 
-        [ClaimsPrincipalPermission(SecurityAction.Demand, Operation = "Update", Resource = "MatchFixture")]
+        [ClaimsAuthorize("Update", "MatchFixture")]
         public HttpResponseMessage Put(UpdateMatchFixtureRequest updateMatchFixtureRequest)
         {
             // TODO: Send back validation errors
