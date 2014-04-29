@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using FuryFootballClub.Core.Migrations;
 using System.Data.Common;
+using System.Web.Management;
+
 
 namespace FuryFootballClub.Core.Domain
 {
@@ -21,7 +23,16 @@ namespace FuryFootballClub.Core.Domain
             DbProviderFactory dbProviderFactory = DbProviderFactories.GetFactory(contextConfig.ProviderName);
             DbConnection dbConnection = dbProviderFactory.CreateConnection();
             dbConnection.ConnectionString = System.Configuration.ConfigurationManager.AppSettings["SQLSERVER_CONNECTION_STRING"];
+            new LogEvent("DB Connection String: "+dbConnection.ConnectionString).Raise();
             return dbConnection;
+        }
+
+        public class LogEvent : WebRequestErrorEvent
+        {
+            public LogEvent(string message)
+                : base(null, null, 100001, new Exception(message))
+            {
+            }
         }
 
         public DbSet<MatchFixture> MatchFixtures { get; set; }
