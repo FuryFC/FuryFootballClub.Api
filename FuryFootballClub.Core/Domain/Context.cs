@@ -15,6 +15,11 @@ namespace FuryFootballClub.Core.Domain
         public DbSet<User> Users { get; set; }
         public DbSet<UserClaim> UserClaims { get; set; }
 
+        public Context():
+            base("Name=SQLSERVER_CONNECTION_STRING")
+        {
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
